@@ -5,7 +5,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -114,13 +114,15 @@ function Navbar() {
           <Link
             to="/login"
             onClick={toggleSidebar}
-            className="flex items-center h-9 px-4 border border-blue-800 bg-blue-400 text-black rounded hover:bg-blue-800 hover:text-white transition-all duration-200"
+            className="flex items-center h-10 px-4 border border-blue-800 bg-blue-400 text-black rounded hover:bg-blue-800 hover:text-white transition-all duration-200"
           >
             Login
           </Link>
         ) : (
           <Link to="/profile" onClick={toggleSidebar}>
-            <li className="p-4 border-b border-gray-700">Profile</li>
+            <li className="flex items-center p-4 border border-gray-700">
+              Profile
+            </li>
           </Link>
         )}
       </div>
