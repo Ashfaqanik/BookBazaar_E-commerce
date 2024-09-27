@@ -6,18 +6,18 @@ function Hero() {
     <div className="h-[75vh] flex">
       <div className="w-full lg:w-3/6 flex flex-col items-center lg:items-start justify-center">
         <h1 className="text-xl sm:text-2xl md:text-4xl lg:text-6xl font-semibold text-slate-700 text-center lg:text-left">
-          Discover Your Next Great Read
+          Uncover Your Next Favorite Book Adventure
         </h1>
         <p className="mt-4 text-xl text-slate-900 text-center lg:text-left">
-          Uncover stories,enriching knowledge and endless inspiration from our
-          collection of books
+          Discover histories, enrich your knowledge, and find endless
+          inspiration in our collection of books..
         </p>
         <div className="mt-8">
           <Link
             to="/all-books"
             className="text-slate-800 sm:text-xl lg:text-2xl font-semibold border bg-blue-400 border-blue-500 px-4 sm:px-6 md:px-7 lg:px-8 py-2 sm:py-3 md:py-3 lg:py-3 hover:bg-blue-800 hover:text-white rounded-full"
           >
-            Discover Books
+            Explore Books
           </Link>
         </div>
       </div>

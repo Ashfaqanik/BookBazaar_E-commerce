@@ -18,7 +18,7 @@ function RecentlyAdded() {
 
   return (
     <div className="mt-8 px-4 md:px-6">
-      <h1 className="font-medium text-3xl text-slate-700">Recent Books</h1>
+      <h1 className="font-medium text-3xl text-slate-700">Latest Books</h1>
       {!data && (
         <div className="flex items-center justify-center my-8">
           <Loader />

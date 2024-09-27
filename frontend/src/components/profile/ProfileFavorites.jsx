@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import BookCard from "../components/BookCard/BookCard";
+import BookCard from "../BookCard/BookCard";
 import axios from "axios";
 
-function Favorites() {
+function ProfileFavorites() {
   const [favoriteBooks, setFavoriteBooks] = useState([]);
   const headers = {
     id: localStorage.getItem("id"),
@@ -18,18 +18,15 @@ function Favorites() {
     fetch();
   }, [favoriteBooks]);
   return (
-    <>
-      <h1 className="ml-4 mt-1 font-bold text-xl text-slate-800">Favorites</h1>
-      <div className="mx-4 mt-4 grid grid-cols-4 gap-4">
-        {favoriteBooks &&
-          favoriteBooks.map((item, i) => (
-            <div key={i}>
-              <BookCard data={item} />
-            </div>
-          ))}
-      </div>
-    </>
+    <div className="grid grid-cols-4 gap-4">
+      {favoriteBooks &&
+        favoriteBooks.map((item, i) => (
+          <div key={i}>
+            <BookCard data={item} />
+          </div>
+        ))}
+    </div>
   );
 }
 
-export default Favorites;
+export default ProfileFavorites;

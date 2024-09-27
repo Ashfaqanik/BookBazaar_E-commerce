@@ -1,16 +1,46 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import { IoCartOutline } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
+import { useSelector } from "react-redux";
+import axios from "axios";
+
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [favoriteBooks, setFavoriteBooks] = useState([]);
+  const headers = {
+    id: localStorage.getItem("id"),
+    authorization: `Bearer ${localStorage.getItem("token")}`,
+  };
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:1000/api/v1/getFavorites",
+          { headers }
+        );
+        setFavoriteBooks(res.data.data || []);
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+      }
+    };
+    fetchFavorites();
+  }, [favoriteBooks]);
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
-  let cartItemCount = 1;
+  const handleClick = (e) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      navigate("/login");
+    }
+  };
+  const favoriteCount = favoriteBooks.length;
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const links = [
     {
@@ -27,10 +57,13 @@ function Navbar() {
       link: "/about-us",
     },
   ];
+
   return (
     <>
-      <nav className="flex bg-slate-200 text-white px-8 py-1.5 overflow-hidden justify-between ">
-        <img className="h-[4rem]" src="/logo.png" alt="logo" />
+      <nav className="fixed top-0 left-0 right-0 z-50 flex bg-slate-200 text-white px-8 py-1.5 overflow-hidden justify-between shadow-sm">
+        <Link to="/">
+          <img className="h-[4rem]" src="/logo.png" alt="logo" />
+        </Link>
         <div className="hidden md:flex text-black  items-center gap-4">
           {links.map((items, i) => (
             <Link
@@ -46,12 +79,13 @@ function Navbar() {
           <div className="relative">
             <Link
               to="/cart"
+              onClick={handleClick}
               className="hover:text-blue-800 transition-all duration-200 hover:underline"
             >
               <IoCartOutline size="25px" />
-              {cartItemCount > 0 && (
+              {favoriteCount > 0 && (
                 <span className="absolute bottom-3 left-2.5 inline-flex items-center justify-center px-1.5 py-1 text-[9px] font-bold leading-none text-white bg-red-600 rounded-full">
-                  {cartItemCount}
+                  {favoriteCount}
                 </span>
               )}
             </Link>
@@ -59,12 +93,13 @@ function Navbar() {
           <div className="relative">
             <Link
               to="/favorites"
+              onClick={handleClick}
               className="hover:text-blue-800 transition-all duration-200 hover:underline"
             >
               <MdFavoriteBorder size="23px" />
-              {cartItemCount > 0 && (
+              {favoriteCount > 0 && (
                 <span className="absolute bottom-2.5 left-3 inline-flex items-center justify-center px-1.5 py-1 text-[9px] font-bold leading-none text-white bg-red-600 rounded-full">
-                  {cartItemCount}
+                  {favoriteCount}
                 </span>
               )}
             </Link>

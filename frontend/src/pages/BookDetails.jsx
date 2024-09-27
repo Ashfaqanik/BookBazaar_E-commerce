@@ -3,8 +3,14 @@ import Loader from "../components/Loader/Loader";
 import axios from "axios";
 import { useState, useEffect, React } from "react";
 import { GrLanguage } from "react-icons/gr";
+import { useSelector } from "react-redux";
+import { FaRegEdit } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 
 function BookDetails() {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const role = useSelector((state) => state.auth.role);
+
   const { id } = useParams();
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -17,6 +23,27 @@ function BookDetails() {
     };
     fetch();
   }, []);
+  const headers = {
+    id: localStorage.getItem("id"),
+    authorization: `Bearer ${localStorage.getItem("token")}`,
+    bookid: id,
+  };
+  const submitFavoriteHandler = async () => {
+    const res = await axios.put(
+      "http://localhost:1000/api/v1/addBookToFavorite",
+      {},
+      { headers }
+    );
+    alert(res.data.message);
+  };
+  const submitCartHandler = async () => {
+    const res = await axios.put(
+      "http://localhost:1000/api/v1/addToCart",
+      {},
+      { headers }
+    );
+    alert(res.data.message);
+  };
   return (
     <>
       {data.length === 0 && (
@@ -46,6 +73,38 @@ function BookDetails() {
             <p className="mt-4 text-slate-600 text-3xl font-semibold">
               Price: $ {data.price}
             </p>
+            {role === "user" && (
+              <div className="flex mt-12 justify-center md:justify-end">
+                <button
+                  onClick={submitFavoriteHandler}
+                  class="bg-pink-800 hover:bg-pink-700 text-white py-2 px-4 rounded"
+                >
+                  {" "}
+                  Add to Favorites
+                </button>
+                <button
+                  onClick={submitCartHandler}
+                  class="ml-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                >
+                  {" "}
+                  Add to Cart
+                </button>
+              </div>
+            )}
+            {role === "admin" && (
+              <div className="flex mt-12 justify-center md:justify-end">
+                <button class="flex bg-pink-800 hover:bg-pink-700 text-white py-2 px-4 rounded">
+                  {" "}
+                  Delete
+                  <MdDeleteOutline className="ml-1 h-6" />
+                </button>
+                <button class="flex ml-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                  {" "}
+                  Edit
+                  <FaRegEdit className="ml-2 h-5" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}
