@@ -15,6 +15,7 @@ body {
 
 main {
   flex-grow: 1;
+  margin-top: 20px;
   background-color: rgb(241, 245, 249);
 }
 

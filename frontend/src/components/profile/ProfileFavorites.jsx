@@ -18,14 +18,21 @@ function ProfileFavorites() {
     fetch();
   }, [favoriteBooks]);
   return (
-    <div className="grid grid-cols-4 gap-4">
-      {favoriteBooks &&
-        favoriteBooks.map((item, i) => (
-          <div key={i}>
-            <BookCard data={item} />
-          </div>
-        ))}
-    </div>
+    <>
+      {favoriteBooks.length === 0 && (
+        <div className="h-[100%] text-4xl font-semibold text-slate-500 flex items-center justify-center w-full">
+          No Favorite Books Added
+        </div>
+      )}
+      <div className="grid grid-cols-4 gap-4">
+        {favoriteBooks &&
+          favoriteBooks.map((item, i) => (
+            <div key={i}>
+              <BookCard data={item} />
+            </div>
+          ))}
+      </div>
+    </>
   );
 }
 

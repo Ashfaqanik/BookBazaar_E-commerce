@@ -21,7 +21,7 @@ function Profile() {
     fetch();
   }, []);
   return (
-    <div className="px-2 md:px-12 flex flex-col md:flex-row h-screen py-8 gap-4">
+    <div className="mt-9 px-2 md:px-12 flex flex-col md:flex-row h-screen py-8 gap-4">
       {!profile && (
         <div className="w-full h-[100%] flex justify-center items-center">
           <Loader />

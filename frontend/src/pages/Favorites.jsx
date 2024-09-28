@@ -18,8 +18,13 @@ function Favorites() {
     fetch();
   }, [favoriteBooks]);
   return (
-    <>
-      <h1 className="ml-4 mt-1 font-bold text-xl text-slate-800">Favorites</h1>
+    <div className="mt-[4rem]">
+      <h1 className="ml-4 font-bold text-xl text-slate-800">Favorites</h1>
+      {favoriteBooks.length === 0 && (
+        <div className="mt-[5rem] h-[100%] text-4xl font-semibold text-slate-500 flex items-center justify-center w-full">
+          No Favorite Books Added
+        </div>
+      )}
       <div className="mx-4 mt-4 grid grid-cols-4 gap-4">
         {favoriteBooks &&
           favoriteBooks.map((item, i) => (
@@ -28,7 +33,7 @@ function Favorites() {
             </div>
           ))}
       </div>
-    </>
+    </div>
   );
 }
 
