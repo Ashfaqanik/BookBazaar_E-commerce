@@ -9,6 +9,8 @@ import axios from "axios";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [favoriteBooks, setFavoriteBooks] = useState([]);
+  const [cart, setCart] = useState([]);
+
   const headers = {
     id: localStorage.getItem("id"),
     authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -28,6 +30,15 @@ function Navbar() {
     };
     fetchFavorites();
   }, [favoriteBooks]);
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await axios.get("http://localhost:1000/api/v1/getCartItems", {
+        headers,
+      });
+      setCart(res.data.data);
+    };
+    fetch();
+  }, [cart]);
   const navigate = useNavigate();
 
   const toggleSidebar = () => {
@@ -40,6 +51,8 @@ function Navbar() {
     }
   };
   const favoriteCount = favoriteBooks.length;
+  const cartCount = cart.length;
+
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const links = [
@@ -85,7 +98,7 @@ function Navbar() {
               <IoCartOutline size="25px" />
               {favoriteCount > 0 && (
                 <span className="absolute bottom-3 left-2.5 inline-flex items-center justify-center px-1.5 py-1 text-[9px] font-bold leading-none text-white bg-red-600 rounded-full">
-                  {favoriteCount}
+                  {cartCount}
                 </span>
               )}
             </Link>
