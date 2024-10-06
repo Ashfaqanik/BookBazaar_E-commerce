@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader/Loader";
 import axios from "axios";
 import { useState, useEffect, React } from "react";
@@ -11,6 +11,7 @@ function BookDetails() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const role = useSelector((state) => state.auth.role);
 
+  const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -29,20 +30,28 @@ function BookDetails() {
     bookid: id,
   };
   const submitFavoriteHandler = async () => {
-    const res = await axios.put(
-      "http://localhost:1000/api/v1/addBookToFavorite",
-      {},
-      { headers }
-    );
-    alert(res.data.message);
+    if (isLoggedIn) {
+      const res = await axios.put(
+        "http://localhost:1000/api/v1/addBookToFavorite",
+        {},
+        { headers }
+      );
+      alert(res.data.message);
+    } else {
+      navigate("/login");
+    }
   };
   const submitCartHandler = async () => {
-    const res = await axios.put(
-      "http://localhost:1000/api/v1/addToCart",
-      {},
-      { headers }
-    );
-    alert(res.data.message);
+    if (isLoggedIn) {
+      const res = await axios.put(
+        "http://localhost:1000/api/v1/addToCart",
+        {},
+        { headers }
+      );
+      alert(res.data.message);
+    } else {
+      navigate("/login");
+    }
   };
   return (
     <>
@@ -52,8 +61,8 @@ function BookDetails() {
         </div>
       )}
       {data !== 0 && (
-        <div className="px-4 md:px-12 py-8 bg-slate-100 flex flex-col md:flex-row gap-8">
-          <div className="bg-slate-300 p-2 h-[58vh] lg:h-[68vh] w-full lg:w-3/6 flex items-center justify-center">
+        <div className="mt-7 px-4 md:px-12 py-8 bg-slate-100 flex flex-col md:flex-row gap-8">
+          <div className=" bg-slate-100 p-2 h-[58vh] lg:h-[68vh] w-full lg:w-3/6 flex items-center justify-center">
             <img
               src={data.url}
               alt="/"

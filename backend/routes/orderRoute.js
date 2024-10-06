@@ -17,9 +17,11 @@ router.post("/placeOrder", authenticateToken, async (req, res) => {
       await User.findByIdAndUpdate(id, {
         $push: { orders: orderDataFromDb._id },
       });
-      //Clear cart
+
+      // Removing ordered items from the User's cart using book IDs
+      const orderedBookIds = order.map((item) => item._id); // Extract book IDs from the order
       await User.findByIdAndUpdate(id, {
-        $pull: { cart: orderDataFromDb._id },
+        $pull: { cart: { $in: orderedBookIds } },
       });
     }
 

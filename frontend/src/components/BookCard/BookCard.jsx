@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
+import { useSelector } from "react-redux";
 
 export default function BookCard({ data }) {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
   const [favoriteBooks, setFavoriteBooks] = useState([]);
   const headers = {
     id: localStorage.getItem("id"),
@@ -23,24 +26,28 @@ export default function BookCard({ data }) {
         console.error("Error fetching favorites:", error);
       }
     };
-    fetchFavorites();
-  }, []);
+    if (isLoggedIn) fetchFavorites();
+  }, [favoriteBooks]);
 
   const isFavorite = favoriteBooks.some((book) => book._id === data._id);
 
   // Adding the book to the favorites list
   const submitFavoriteHandler = async () => {
-    try {
-      const res = await axios.put(
-        "http://localhost:1000/api/v1/addBookToFavorite",
-        { bookId: data._id }, // Passing the book ID to the API
-        { headers }
-      );
-      alert(res.data.message);
+    if (isLoggedIn) {
+      try {
+        const res = await axios.put(
+          "http://localhost:1000/api/v1/addBookToFavorite",
+          { bookId: data._id }, // Passing the book ID to the API
+          { headers }
+        );
+        alert(res.data.message);
 
-      setFavoriteBooks((prevFavorites) => [...prevFavorites, data]);
-    } catch (error) {
-      console.error("Error adding to favorites:", error);
+        setFavoriteBooks((prevFavorites) => [...prevFavorites, data]);
+      } catch (error) {
+        console.error("Error adding to favorites:", error);
+      }
+    } else {
+      alert("Please log in to your account");
     }
   };
 

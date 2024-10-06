@@ -1,12 +1,25 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { useDispatch } from "react-redux";
 
 function Sidebar({ data }) {
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
   const [activeLink, setActiveLink] = useState("favorites");
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };
+  const onLogoutHandler = () => {
+    localStorage.removeItem("id");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    dispatch(authActions.logout());
+    navigate("/login");
+  };
+
   return (
     <div className="bg-slate-200 p-4 rounded flex flex-col items-center justify-between h-[100%]">
       <div className="flex items-center flex-col justify-center">
@@ -50,7 +63,10 @@ function Sidebar({ data }) {
           Settings
         </Link>
       </div>
-      <button className="bg-slate-400 hover:text-white  w-3/6 lg:w-full mt-4 lg:mt-0 font-semibold flex items-center justify-center py-2 rounded hover:bg-slate-500 transition-all duration-300">
+      <button
+        onClick={onLogoutHandler}
+        className="bg-slate-400 text-slate-700 hover:text-white  w-3/6 lg:w-full mt-4 lg:mt-0 font-semibold flex items-center justify-center py-2 rounded hover:bg-slate-500 transition-all duration-300"
+      >
         Log Out <FaArrowRightFromBracket className=" ms-4" />
       </button>
     </div>

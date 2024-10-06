@@ -5,12 +5,14 @@ const authenticateToken = (req, res, next) => {
   const token = authHeader && authHeader.split(" ")[1];
 
   if (token == null) {
-    res.status(401).json({ message: "Authentication token required" });
+    return res.status(401).json({ message: "Authentication token required" });
   }
 
   jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
     if (err) {
-      res.status(403).json({ message: "Token expired. Please sign in again." });
+      return res
+        .status(403)
+        .json({ message: "Token expired. Please sign in again." });
     }
     req.user = user;
     next();

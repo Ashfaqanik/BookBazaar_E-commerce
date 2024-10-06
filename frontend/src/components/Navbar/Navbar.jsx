@@ -7,9 +7,11 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 function Navbar() {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [favoriteBooks, setFavoriteBooks] = useState([]);
   const [cart, setCart] = useState([]);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const headers = {
     id: localStorage.getItem("id"),
@@ -28,8 +30,9 @@ function Navbar() {
         console.error("Error fetching favorites:", error);
       }
     };
+
     fetchFavorites();
-  }, [favoriteBooks]);
+  }, [favoriteBooks, isLoggedIn]);
   useEffect(() => {
     const fetch = async () => {
       const res = await axios.get("http://localhost:1000/api/v1/getCartItems", {
@@ -38,8 +41,7 @@ function Navbar() {
       setCart(res.data.data);
     };
     fetch();
-  }, [cart]);
-  const navigate = useNavigate();
+  }, [cart, isLoggedIn]);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -52,8 +54,6 @@ function Navbar() {
   };
   const favoriteCount = favoriteBooks.length;
   const cartCount = cart.length;
-
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
   const links = [
     {
@@ -96,7 +96,7 @@ function Navbar() {
               className="hover:text-blue-800 transition-all duration-200 hover:underline"
             >
               <IoCartOutline size="25px" />
-              {favoriteCount > 0 && (
+              {cartCount > 0 && (
                 <span className="absolute bottom-3 left-2.5 inline-flex items-center justify-center px-1.5 py-1 text-[9px] font-bold leading-none text-white bg-red-600 rounded-full">
                   {cartCount}
                 </span>

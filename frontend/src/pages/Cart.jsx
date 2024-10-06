@@ -2,46 +2,93 @@ import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader/Loader";
 import { AiFillDelete } from "react-icons/ai";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
-  const [cart, setCart] = useState();
+  const navigate = useNavigate();
+
+  const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
+  const [shippingCost, setShippingCost] = useState(20);
+  const [discount, setDiscount] = useState(0);
+
   const headers = {
     id: localStorage.getItem("id"),
     authorization: `Bearer ${localStorage.getItem("token")}`,
   };
 
+  // Fetching the cart items on component mount
   useEffect(() => {
-    const fetch = async () => {
-      const res = await axios.get("http://localhost:1000/api/v1/getCartItems", {
-        headers,
-      });
-      setCart(res.data.data);
+    const fetchCartItems = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:1000/api/v1/getCartItems",
+          {
+            headers,
+          }
+        );
+        setCart(res.data.data);
+      } catch (err) {
+        console.error("Failed to fetch cart items", err);
+      }
     };
-    fetch();
-  }, [headers]);
+    fetchCartItems();
+  }, []);
 
+  // Calculate total price and discount when cart changes
   useEffect(() => {
     if (cart && cart.length > 0) {
+      // Calculate total price of items in the cart
       const total = cart.reduce((acc, item) => acc + item.price, 0);
       setTotal(total);
+
+      // Calculate total discount by summing up each item's discount value
+      const totalDiscount = cart.reduce(
+        (acc, item) => acc + (item.discount || 0),
+        0
+      );
+      setDiscount(totalDiscount);
     } else {
       setTotal(0);
+      setDiscount(0);
     }
   }, [cart]);
-
-  const deleteItem = async (id) => {
-    const response = await axios.put(
-      `http://localhost:1000/api/v1/removeBookFromCart/${id}`,
-      {},
-      { headers }
-    );
-    alert(response.data.message);
+  const placeOrder = async () => {
+    try {
+      const res = await axios.post(
+        `http://localhost:1000/api/v1/placeOrder`,
+        { order: cart },
+        { headers }
+      );
+      alert(res.data.message);
+      navigate("/profile/orderHistory");
+    } catch (error) {
+      alert(error.message);
+    }
   };
+
+  // Delete item from cart
+  const deleteItem = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:1000/api/v1/removeBookFromCart/${id}`,
+        {},
+        { headers }
+      );
+      alert(response.data.message);
+      // Remove item from local state
+      setCart((prevCart) => prevCart.filter((item) => item._id !== id));
+    } catch (err) {
+      console.error("Failed to remove item from cart", err);
+    }
+  };
+
+  // Calculate discounted total and final total with shipping
+  const discountedTotal = total - discount;
+  const finalTotal = discountedTotal + shippingCost;
 
   return (
     <div>
-      {/* Loader for when the cart is not loaded */}
       {!cart && (
         <div className="h-screen mt-[1rem] flex items-center justify-center flex-col">
           <Loader />
@@ -65,12 +112,12 @@ function Cart() {
 
       {cart && cart.length > 0 && (
         <>
-          <h1 className="ml-3 mt-[4rem] text-3xl font-semibold text-zinc-700 mb-5">
+          <h1 className="ml-4 mt-[4rem] text-3xl font-semibold text-zinc-700 mb-5">
             Your Cart
           </h1>
           {cart.map((item, i) => (
             <div
-              className="w-[80%] ml-9 md:ml-4 my-4 rounded-md flex flex-col md:flex-row p-4 bg-slate-200 justify-between items-center"
+              className="w-[65%] ml-16 md:ml-5 my-4 rounded-md flex flex-col md:flex-row p-4 bg-slate-200 justify-between items-center"
               key={i}
             >
               {/* Item Image */}
@@ -113,18 +160,61 @@ function Cart() {
             </div>
           ))}
 
-          {/* Total Price and Checkout Section */}
-          <div className="flex justify-between w-[80%] ml-8 md:ml-4 mt-7 p-4 bg-slate-200 rounded-md shadow-md mb-7">
-            <h2 className="text-2xl font-semibold text-slate-800">
-              Total Price:
+          {/* Price Details Section - Fixed at the Top Right Corner (Desktop) */}
+          <div
+            className="mt-[4.5rem] fixed top-16 right-8 bg-slate-200 p-6 rounded-lg shadow-md w-[300px] h-auto lg:block hidden"
+            style={{ zIndex: 1000 }}
+          >
+            <h2 className="text-2xl font-semibold text-slate-800 mb-4">
+              Price Details
             </h2>
-            <h2 className="text-2xl font-semibold text-slate-800">
-              ${total.toFixed(2)}
-            </h2>
+            <div className="flex justify-between text-lg mb-2">
+              <span>Subtotal:</span>
+              <span>${total.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-lg mb-2">
+              <span>Discount:</span>
+              <span>- ${discount.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-lg mb-2">
+              <span>Shipping Cost:</span>
+              <span>${shippingCost.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-xl font-semibold mt-4 border-t pt-4">
+              <span>Total Cost:</span>
+              <span>${finalTotal.toFixed(2)}</span>
+            </div>
+            <button
+              onClick={placeOrder}
+              className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200"
+            >
+              Proceed to Checkout
+            </button>
           </div>
-          <div className=" md:ml-5 w-[70%] md:w-[80%] mb-7">
-            <button className="flex ml-auto px-6 py-4 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200">
-              Place Your Order
+
+          {/* Responsive Price Details Section for Mobile View */}
+          <div className="mb-6 ml-10 relative w-[80%] bg-slate-200 p-6 rounded-t-lg shadow-md lg:hidden">
+            <h2 className="text-xl font-semibold text-slate-800 mb-4 text-center">
+              Price Details
+            </h2>
+            <div className="flex justify-between text-lg mb-2">
+              <span>Subtotal:</span>
+              <span>${total.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-lg mb-2">
+              <span>Discount:</span>
+              <span>- ${discount.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-lg mb-2">
+              <span>Shipping Cost:</span>
+              <span>${shippingCost.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-xl font-semibold mt-4 border-t pt-4">
+              <span>Total Cost:</span>
+              <span>${finalTotal.toFixed(2)}</span>
+            </div>
+            <button className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200">
+              Proceed to Checkout
             </button>
           </div>
         </>
