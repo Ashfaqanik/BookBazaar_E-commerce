@@ -70,42 +70,42 @@ export default function BookCard({ data }) {
   };
 
   return (
-    <>
-      <Link to={`/book-details/${data._id}`}>
-        <div className="bg-slate-300 rounded mr-6 ml-6 md:m-0 p-6 md:p-4 flex flex-col">
-          <div className="rounded flex items-center justify-center">
-            <img src={data.url} alt={data.title} className="h-[25vh]" />
-          </div>
-          <div className="h-[6.5rem] overflow-hidden text-ellipsis whitespace-nowrap">
-            <h2 className="text-slate-800 mt-4 text-xl font-semibold">
-              {data.title}
-            </h2>
-            <p className="mt-1 text-slate-600 font-semibold">
-              by {data?.author}
+    <Link to={`/book-details/${data._id}`}>
+      <div className="bg-slate-300 rounded-lg mx-2 md:mx-0 p-4 flex flex-col transition-transform duration-200 hover:scale-105">
+        <div className="flex items-center justify-center">
+          <img
+            src={data.url}
+            alt={data.title}
+            className="h-[20vh] md:h-[25vh] w-auto rounded"
+          />
+        </div>
+        <div className="h-[6.5rem] overflow-hidden text-ellipsis whitespace-nowrap">
+          <h2 className="text-slate-800 mt-4 text-lg md:text-xl font-semibold">
+            {data.title}
+          </h2>
+          <p className="mt-1 text-slate-600 font-semibold text-sm md:text-base">
+            by {data?.author}
+          </p>
+          <div className="flex justify-between items-center mt-2">
+            <p className="text-slate-900 font-semibold text-lg md:text-xl">
+              $ {data?.price}
             </p>
-            <div className="flex justify-between items-center">
-              <p className="mt-1 text-slate-900 font-semibold text-xl">
-                $ {data?.price}
-              </p>
-              <div
-                className="mt-2 hover:text-red-500 transition-all duration-200"
-                onClick={(e) => {
-                  e.preventDefault();
-                  isFavorite
-                    ? removeFavoriteHandler()
-                    : submitFavoriteHandler();
-                }}
-              >
-                {isFavorite ? (
-                  <MdFavorite size="23px" color="red" />
-                ) : (
-                  <MdFavoriteBorder size="23px" />
-                )}
-              </div>
+            <div
+              className="hover:text-red-500 transition-all duration-200"
+              onClick={(e) => {
+                e.preventDefault();
+                isFavorite ? removeFavoriteHandler() : submitFavoriteHandler();
+              }}
+            >
+              {isFavorite ? (
+                <MdFavorite size="23px" color="red" />
+              ) : (
+                <MdFavoriteBorder size="23px" />
+              )}
             </div>
           </div>
         </div>
-      </Link>
-    </>
+      </div>
+    </Link>
   );
 }
