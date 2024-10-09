@@ -86,14 +86,14 @@ function BookDetails() {
               <div className="flex mt-12 justify-center md:justify-end">
                 <button
                   onClick={submitFavoriteHandler}
-                  class="bg-pink-800 hover:bg-pink-700 text-white py-2 px-4 rounded"
+                  className="bg-pink-800 hover:bg-pink-700 text-white py-2 px-4 rounded"
                 >
                   {" "}
                   Add to Favorites
                 </button>
                 <button
                   onClick={submitCartHandler}
-                  class="ml-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                  className="ml-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
                 >
                   {" "}
                   Add to Cart
@@ -102,12 +102,12 @@ function BookDetails() {
             )}
             {role === "admin" && (
               <div className="flex mt-12 justify-center md:justify-end">
-                <button class="flex bg-pink-800 hover:bg-pink-700 text-white py-2 px-4 rounded">
+                <button className="flex bg-pink-800 hover:bg-pink-700 text-white py-2 px-4 rounded">
                   {" "}
                   Delete
                   <MdDeleteOutline className="ml-1 h-6" />
                 </button>
-                <button class="flex ml-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+                <button className="flex ml-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
                   {" "}
                   Edit
                   <FaRegEdit className="ml-2 h-5" />

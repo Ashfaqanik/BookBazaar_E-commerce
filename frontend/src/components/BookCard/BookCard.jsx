@@ -26,7 +26,7 @@ export default function BookCard({ data }) {
         console.error("Error fetching favorites:", error);
       }
     };
-    if (isLoggedIn) fetchFavorites();
+    isLoggedIn && fetchFavorites();
   }, [favoriteBooks]);
 
   const isFavorite = favoriteBooks.some((book) => book._id === data._id);

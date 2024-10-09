@@ -5,8 +5,11 @@ import { IoCartOutline } from "react-icons/io5";
 import { MdFavoriteBorder } from "react-icons/md";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { authActions } from "../../store/auth";
+import { useDispatch } from "react-redux";
 
 function Navbar() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [favoriteBooks, setFavoriteBooks] = useState([]);
@@ -19,28 +22,34 @@ function Navbar() {
   };
 
   useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:1000/api/v1/getFavorites",
-          { headers }
-        );
-        setFavoriteBooks(res.data.data || []);
-      } catch (error) {
-        console.error("Error fetching favorites:", error);
-      }
-    };
-
-    fetchFavorites();
+    if (isLoggedIn) {
+      const fetchFavorites = async () => {
+        try {
+          const res = await axios.get(
+            "http://localhost:1000/api/v1/getFavorites",
+            { headers }
+          );
+          setFavoriteBooks(res.data.data || []);
+        } catch (error) {
+          console.error("Error fetching favorites");
+        }
+      };
+      fetchFavorites();
+    }
   }, [favoriteBooks, isLoggedIn]);
   useEffect(() => {
-    const fetch = async () => {
-      const res = await axios.get("http://localhost:1000/api/v1/getCartItems", {
-        headers,
-      });
-      setCart(res.data.data);
-    };
-    fetch();
+    if (isLoggedIn) {
+      const fetch = async () => {
+        const res = await axios.get(
+          "http://localhost:1000/api/v1/getCartItems",
+          {
+            headers,
+          }
+        );
+        setCart(res.data.data);
+      };
+      fetch();
+    }
   }, [cart, isLoggedIn]);
 
   const toggleSidebar = () => {
@@ -51,6 +60,14 @@ function Navbar() {
       e.preventDefault();
       navigate("/login");
     }
+  };
+  const onLogoutHandler = () => {
+    dispatch(authActions.logout());
+    dispatch(authActions.changeRole("user"));
+    localStorage.removeItem("id");
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/");
   };
   const favoriteCount = favoriteBooks.length;
   const cartCount = cart.length;
@@ -172,6 +189,13 @@ function Navbar() {
               Profile
             </li>
           </Link>
+        )}
+        {isLoggedIn && (
+          <div onClick={onLogoutHandler}>
+            <li className=" cursor-pointer flex items-center p-4 border border-gray-700">
+              Log Out
+            </li>
+          </div>
         )}
       </div>
 

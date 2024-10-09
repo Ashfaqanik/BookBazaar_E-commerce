@@ -7,7 +7,6 @@ import SignUp from "./pages/SignUp";
 import Cart from "./pages/Cart";
 import Profile from "./pages/Profile";
 import Favorites from "./pages/Favorites";
-import ProfileFavorites from "./components/profile/ProfileFavorites";
 import OrderHistory from "./components/profile/OrderHistory";
 import AboutUs from "./pages/AboutUs";
 import Allbooks from "./pages/AllBooks";
@@ -15,6 +14,7 @@ import BookDetails from "./pages/BookDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "./store/auth";
 import { useEffect } from "react";
+import AccountDetails from "./pages/AccountDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,7 +41,8 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/profile" element={<Profile />}>
-            <Route index element={<ProfileFavorites />} />
+            <Route index element={<AccountDetails />} />
+            <Route index path="/profile" element={<AccountDetails />} />
             <Route path="/profile/orderHistory" element={<OrderHistory />} />
           </Route>
           <Route path="/about-us" element={<AboutUs />} />

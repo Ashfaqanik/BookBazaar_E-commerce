@@ -40,7 +40,7 @@ router.get("/getOrderHistory", authenticateToken, async (req, res) => {
 
     const userData = await User.findById(id).populate({
       path: "orders",
-      populate: { path: "books" },
+      populate: { path: "book" },
     });
 
     const orderData = userData.orders.reverse();
@@ -49,7 +49,8 @@ router.get("/getOrderHistory", authenticateToken, async (req, res) => {
       data: orderData,
     });
   } catch (error) {
-    res.status(500).json({ message: "An error occurred" });
+    // res.status(500).json({ message: "An error occurred" });
+    res.json(error.message);
   }
 });
 
