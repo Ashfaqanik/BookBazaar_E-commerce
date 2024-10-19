@@ -15,6 +15,7 @@ function Navbar() {
   const [favoriteBooks, setFavoriteBooks] = useState([]);
   const [cart, setCart] = useState([]);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const role = useSelector((state) => state.auth.role);
 
   const headers = {
     id: localStorage.getItem("id"),
@@ -106,34 +107,38 @@ function Navbar() {
           ))}
         </div>
         <div className="flex gap-4 items-center text-black">
-          <div className="relative">
-            <Link
-              to="/cart"
-              onClick={handleClick}
-              className="hover:text-blue-800 transition-all duration-200 hover:underline"
-            >
-              <IoCartOutline size="25px" />
-              {cartCount > 0 && (
-                <span className="absolute bottom-3 left-2.5 inline-flex items-center justify-center px-1.5 py-1 text-[9px] font-bold leading-none text-white bg-red-600 rounded-full">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
-          </div>
-          <div className="relative">
-            <Link
-              to="/favorites"
-              onClick={handleClick}
-              className="hover:text-blue-800 transition-all duration-200 hover:underline"
-            >
-              <MdFavoriteBorder size="23px" />
-              {favoriteCount > 0 && (
-                <span className="absolute bottom-2.5 left-3 inline-flex items-center justify-center px-1.5 py-1 text-[9px] font-bold leading-none text-white bg-red-600 rounded-full">
-                  {favoriteCount}
-                </span>
-              )}
-            </Link>
-          </div>
+          {role === "user" && (
+            <div className="relative">
+              <Link
+                to="/cart"
+                onClick={handleClick}
+                className="hover:text-blue-800 transition-all duration-200 hover:underline"
+              >
+                <IoCartOutline size="25px" />
+                {cartCount > 0 && (
+                  <span className="absolute bottom-3 left-2.5 inline-flex items-center justify-center px-1.5 py-1 text-[9px] font-bold leading-none text-white bg-red-600 rounded-full">
+                    {cartCount}
+                  </span>
+                )}
+              </Link>
+            </div>
+          )}
+          {role === "user" && (
+            <div className="relative">
+              <Link
+                to="/favorites"
+                onClick={handleClick}
+                className="hover:text-blue-800 transition-all duration-200 hover:underline"
+              >
+                <MdFavoriteBorder size="23px" />
+                {favoriteCount > 0 && (
+                  <span className="absolute bottom-2.5 left-3 inline-flex items-center justify-center px-1.5 py-1 text-[9px] font-bold leading-none text-white bg-red-600 rounded-full">
+                    {favoriteCount}
+                  </span>
+                )}
+              </Link>
+            </div>
+          )}
 
           {!isLoggedIn ? (
             // Show the Login button if the user is not logged in

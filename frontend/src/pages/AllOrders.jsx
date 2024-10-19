@@ -48,7 +48,7 @@ function AllOrders() {
   };
 
   return (
-    <div className="min-h-screen p-2 md:p-6 bg-slate-100 text-slate-600">
+    <div className="min-h-screen py-2 px-2 md:px-5 bg-slate-100 text-slate-600">
       {!allOrders && (
         <div className="h-[100%] flex items-center justify-center">
           <Loader />
@@ -56,7 +56,7 @@ function AllOrders() {
       )}
       {allOrders && allOrders.length > 0 && (
         <div>
-          <h1 className="text-2xl md:text-3xl font-semibold text-slate-500 mb-8 text-center md:text-left">
+          <h1 className="text-2xl md:text-3xl font-semibold text-slate-500 mb-4 text-center md:text-left">
             All Orders
           </h1>
           <div className="mt-4 bg-slate-500 w-full rounded py-2 px-4 flex gap-2">
