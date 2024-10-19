@@ -5,7 +5,7 @@ function AboutUs() {
     <div className="bg-slate-100 min-h-screen py-12 px-4">
       <div className="max-w-4xl mx-auto bg-slate-100 rounded-lg overflow-hidden">
         <div className="p-8">
-          <h1 className="flex items-center justify-center text-3xl font-semibold text-slate-500 mb-8">
+          <h1 className="flex items-center justify-center text-3xl font-semibold text-slate-500 mb-10">
             About Us
           </h1>
           {/* Our Story */}

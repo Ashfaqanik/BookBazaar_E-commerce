@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader/Loader";
 import axios from "axios";
-import { useState, useEffect, React } from "react";
+import { useState, useEffect } from "react";
 import { GrLanguage } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import { FaRegEdit } from "react-icons/fa";
@@ -14,6 +14,7 @@ function BookDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [data, setData] = useState([]);
+
   useEffect(() => {
     const fetch = async () => {
       const res = await axios.get(
@@ -23,12 +24,14 @@ function BookDetails() {
       setData(res.data.data);
     };
     fetch();
-  }, []);
+  }, [id]);
+
   const headers = {
     id: localStorage.getItem("id"),
     authorization: `Bearer ${localStorage.getItem("token")}`,
     bookid: id,
   };
+
   const submitFavoriteHandler = async () => {
     if (isLoggedIn) {
       const res = await axios.put(
@@ -41,6 +44,7 @@ function BookDetails() {
       navigate("/login");
     }
   };
+
   const submitCartHandler = async () => {
     if (isLoggedIn) {
       const res = await axios.put(
@@ -53,6 +57,31 @@ function BookDetails() {
       navigate("/login");
     }
   };
+
+  const deleteBookHandler = async () => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this book?"
+    );
+    if (confirmDelete) {
+      try {
+        const res = await axios.delete(
+          "http://localhost:1000/api/v1/deleteBook",
+          {
+            headers,
+          }
+        );
+        alert(res.data.message);
+        navigate("/all-books"); // Redirect to the all-books page
+      } catch (error) {
+        alert(error.response?.data?.message || "Failed to delete the book");
+      }
+    }
+  };
+
+  const handleEdit = () => {
+    navigate(`/update-book/${id}`); // Navigate to the update book page
+  };
+
   return (
     <>
       {data.length === 0 && (
@@ -88,27 +117,29 @@ function BookDetails() {
                   onClick={submitFavoriteHandler}
                   className="bg-pink-800 hover:bg-pink-700 text-white py-2 px-4 rounded"
                 >
-                  {" "}
                   Add to Favorites
                 </button>
                 <button
                   onClick={submitCartHandler}
                   className="ml-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
                 >
-                  {" "}
                   Add to Cart
                 </button>
               </div>
             )}
             {role === "admin" && (
               <div className="flex mt-12 justify-center md:justify-end">
-                <button className="flex bg-pink-800 hover:bg-pink-700 text-white py-2 px-4 rounded">
-                  {" "}
+                <button
+                  onClick={deleteBookHandler}
+                  className="flex bg-pink-800 hover:bg-pink-700 text-white py-2 px-4 rounded"
+                >
                   Delete
                   <MdDeleteOutline className="ml-1 h-6" />
                 </button>
-                <button className="flex ml-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-                  {" "}
+                <button
+                  onClick={handleEdit}
+                  className="flex ml-6 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                >
                   Edit
                   <FaRegEdit className="ml-2 h-5" />
                 </button>

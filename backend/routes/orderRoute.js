@@ -56,12 +56,9 @@ router.get("/getOrderHistory", authenticateToken, async (req, res) => {
 
 router.get("/getAllOrders", authenticateToken, async (req, res) => {
   try {
-    const userData = await Order.find
+    const userData = await Order.find()
       .populate({
-        path: "books",
-      })
-      .populate({
-        path: "books",
+        path: "book",
       })
       .sort({ createdAt: -1 });
 
@@ -70,7 +67,7 @@ router.get("/getAllOrders", authenticateToken, async (req, res) => {
       data: userData,
     });
   } catch (error) {
-    res.status(500).json({ message: "An error occurred" });
+    res.status(500).json({ message: error.message });
   }
 });
 

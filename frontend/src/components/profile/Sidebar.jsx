@@ -3,10 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
+import { useSelector } from "react-redux";
 
 function Sidebar({ data }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const role = useSelector((state) => state.auth.role);
 
   const [activeLink, setActiveLink] = useState("accountDetails");
   const handleLinkClick = (link) => {
@@ -30,29 +32,56 @@ function Sidebar({ data }) {
         <div className="w-full bg-zinc-500 mt-4 h-[1px] hidden lg:block" />
       </div>
 
-      <div className="w-full flex-col items-center justify-center hidden lg:flex">
-        {/* Account Details Link */}
-        <Link
-          to="/profile"
-          onClick={() => handleLinkClick("accountDetails")}
-          className={`font-semibold w-full py-2 text-center hover:bg-slate-300 rounded transition-all duration-300 ${
-            activeLink === "accountDetails" ? "bg-slate-300" : ""
-          }`}
-        >
-          Account Details
-        </Link>
+      {role === "user" && (
+        <div className="w-full flex-col items-center justify-center hidden lg:flex">
+          {/* Account Details Link */}
+          <Link
+            to="/profile"
+            onClick={() => handleLinkClick("accountDetails")}
+            className={`font-semibold w-full py-2 text-center hover:bg-slate-300 rounded transition-all duration-300 ${
+              activeLink === "accountDetails" ? "bg-slate-300" : ""
+            }`}
+          >
+            Account Details
+          </Link>
 
-        {/* Order History Link */}
-        <Link
-          to="/profile/orderHistory"
-          onClick={() => handleLinkClick("orderHistory")}
-          className={`font-semibold w-full py-2 text-center hover:bg-slate-300 rounded transition-all duration-300 ${
-            activeLink === "orderHistory" ? "bg-slate-300" : ""
-          }`}
-        >
-          Order History
-        </Link>
-      </div>
+          {/* Order History Link */}
+          <Link
+            to="/profile/orderHistory"
+            onClick={() => handleLinkClick("orderHistory")}
+            className={`font-semibold w-full py-2 text-center hover:bg-slate-300 rounded transition-all duration-300 ${
+              activeLink === "orderHistory" ? "bg-slate-300" : ""
+            }`}
+          >
+            Order History
+          </Link>
+        </div>
+      )}
+      {role === "admin" && (
+        <div className="w-full flex-col items-center justify-center hidden lg:flex">
+          {/* All Orders Link */}
+          <Link
+            to="/profile"
+            onClick={() => handleLinkClick("accountDetails")}
+            className={`font-semibold w-full py-2 text-center hover:bg-slate-300 rounded transition-all duration-300 ${
+              activeLink === "accountDetails" ? "bg-slate-300" : ""
+            }`}
+          >
+            All Orders
+          </Link>
+
+          {/* Add Book Link */}
+          <Link
+            to="/profile/addBook"
+            onClick={() => handleLinkClick("orderHistory")}
+            className={`font-semibold w-full py-2 text-center hover:bg-slate-300 rounded transition-all duration-300 ${
+              activeLink === "orderHistory" ? "bg-slate-300" : ""
+            }`}
+          >
+            Add Book
+          </Link>
+        </div>
+      )}
       <button
         onClick={onLogoutHandler}
         className="flex hover:bg-slate-400 bg-slate-500 text-white hover:text-black w-[35%] lg:w-full md:mt-0 font-semibold items-center justify-center py-2 rounded  transition-all duration-300"

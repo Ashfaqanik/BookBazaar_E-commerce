@@ -83,9 +83,9 @@ function OrderHistory() {
               </div>
               <div className="w-[16%]">
                 <h1
-                  className={`text-center font-semibold ${
+                  className={`text-center font-light ${
                     item.status === "Order Placed"
-                      ? "text-green-500"
+                      ? "text-green-600"
                       : item.status === "Cancelled"
                       ? "text-red-500"
                       : "text-green-800"

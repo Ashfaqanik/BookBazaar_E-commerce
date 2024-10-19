@@ -15,10 +15,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "./store/auth";
 import { useEffect } from "react";
 import AccountDetails from "./pages/AccountDetails";
+import AllOrders from "./pages/AllOrders";
+import AddBook from "./pages/AddBook";
+import UpdateBook from "./pages/UpdateBook";
 
 function App() {
   const dispatch = useDispatch();
-  //   const role = useSelector((state) => state.auth.role);
+  const role = useSelector((state) => state.auth.role);
   useEffect(() => {
     if (
       localStorage.getItem("id") &&
@@ -41,12 +44,20 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/profile" element={<Profile />}>
-            <Route index element={<AccountDetails />} />
-            <Route index path="/profile" element={<AccountDetails />} />
-            <Route path="/profile/orderHistory" element={<OrderHistory />} />
+            {role === "user" ? (
+              <Route index element={<AccountDetails />} />
+            ) : (
+              <Route index element={<AllOrders />} />
+            )}
+            {role === "user" ? (
+              <Route path="/profile/orderHistory" element={<OrderHistory />} />
+            ) : (
+              <Route path="/profile/addBook" element={<AddBook />} />
+            )}
           </Route>
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/book-details/:id" element={<BookDetails />} />
+          <Route path="/update-book/:id" element={<UpdateBook />} />
         </Routes>
       </main>
       <Footer />
