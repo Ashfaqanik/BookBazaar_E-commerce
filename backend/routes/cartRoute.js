@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/user");
 const { authenticateToken } = require("./userAuth");
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 router.put("/addToCart", authenticateToken, async (req, res) => {
   try {
@@ -45,5 +46,28 @@ router.get("/getCartItems", authenticateToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "An error occurred" });
   }
+});
+router.post("/create-checkout-session", async (req, res) => {
+  const { products } = req.body;
+
+  const lineItems = products.map((product) => ({
+    price_data: {
+      currency: "aud",
+      product_data: {
+        name: product.title,
+        images: [product.url],
+      },
+      unit_amount: Math.round(product.price * 100),
+    },
+    quantity: 1,
+  }));
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: lineItems,
+    mode: "payment",
+    success_url: "http://localhost:5173/success",
+    cancel_url: "http://localhost:5173/cancelled",
+  });
+  res.json({ id: session.id });
 });
 module.exports = router;

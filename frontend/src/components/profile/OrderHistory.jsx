@@ -95,7 +95,7 @@ function OrderHistory() {
                 </h1>
               </div>
               <div className="w-none md:w-[10%] hidden md:block">
-                <h1 className="text-center text-slate-800">COD</h1>
+                <h1 className="text-center text-slate-800">{item.payment}</h1>
               </div>
             </div>
           ))}

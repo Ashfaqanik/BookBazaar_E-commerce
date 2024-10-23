@@ -69,7 +69,12 @@ function AccountDetails() {
     setIsEditing(!isEditing);
   };
 
-  if (loading) return <Loader />;
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <Loader />
+      </div>
+    );
 
   if (error) return <div>{error}</div>;
 

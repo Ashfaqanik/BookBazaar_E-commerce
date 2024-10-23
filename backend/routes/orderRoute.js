@@ -70,6 +70,19 @@ router.get("/getAllOrders", authenticateToken, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+router.put("/updatePaymentStatus/:id", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await Order.findByIdAndUpdate(id, { payment: req.body.status });
+    res.json({
+      status: "Success",
+      data: "Status updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "An error occurred" });
+  }
+});
 
 //Update order --admin
 router.put("/updateOrderStatus/:id", authenticateToken, async (req, res) => {

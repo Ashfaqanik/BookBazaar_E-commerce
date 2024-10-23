@@ -72,6 +72,9 @@ function AllOrders() {
             <div className="md:w-[10%] w-[8%] text-xs md:text-sm">
               <h1 className="text-center text-white">Price</h1>
             </div>
+            <div className="w-none md:w-[10%] text-xs md:text-sm hidden md:block">
+              <h1 className="text-center text-white">Payment</h1>
+            </div>
             <div className="w-[20%] text-xs md:text-sm">
               <h1 className="text-center text-white">Update Status</h1>
             </div>
@@ -96,6 +99,9 @@ function AllOrders() {
               </div>
               <div className="md:w-[10%] w-[8%] text-xs md:text-sm">
                 <h1 className="text-center">{item.book.price}</h1>
+              </div>
+              <div className="w-none md:w-[10%] hidden md:block text-xs md:text-sm">
+                <h1 className="text-center">{item.payment}</h1>
               </div>
               <div className="w-[20%] text-xs md:text-sm">
                 <select

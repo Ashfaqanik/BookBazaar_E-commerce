@@ -16,6 +16,7 @@ app.use("/api/v1", books);
 app.use("/api/v1", favorites);
 app.use("/api/v1", cart);
 app.use("/api/v1", order);
+app.use(express.static("public"));
 
 app.listen(process.env.PORT, () => {
   console.log(`Server started at port ${process.env.PORT}`);

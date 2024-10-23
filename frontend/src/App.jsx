@@ -18,6 +18,8 @@ import AccountDetails from "./pages/AccountDetails";
 import AllOrders from "./pages/AllOrders";
 import AddBook from "./pages/AddBook";
 import UpdateBook from "./pages/UpdateBook";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCancelled from "./pages/PaymentCancelled";
 
 function App() {
   const dispatch = useDispatch();
@@ -58,6 +60,8 @@ function App() {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/book-details/:id" element={<BookDetails />} />
           <Route path="/update-book/:id" element={<UpdateBook />} />
+          <Route path="/success" element={<PaymentSuccess />} />
+          <Route path="/cancelled" element={<PaymentCancelled />} />
         </Routes>
       </main>
       <Footer />

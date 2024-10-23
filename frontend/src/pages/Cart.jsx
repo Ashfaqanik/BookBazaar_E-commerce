@@ -3,6 +3,7 @@ import Loader from "../components/Loader/Loader";
 import { AiFillDelete } from "react-icons/ai";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
 
 function Cart() {
   const navigate = useNavigate();
@@ -55,15 +56,50 @@ function Cart() {
   }, [cart]);
   const placeOrder = async () => {
     try {
-      const res = await axios.post(
-        `http://localhost:1000/api/v1/placeOrder`,
+      // First API call to place the order in your local system
+      const placeOrderRes = await axios.post(
+        "http://localhost:1000/api/v1/placeOrder",
         { order: cart },
         { headers }
       );
-      alert(res.data.message);
-      navigate("/profile/orderHistory");
+
+      // If the order is placed successfully, proceed with Stripe payment
+      const stripe = await loadStripe(
+        "pk_test_51QBwLbB3R7LrpDYh7pyjrGyMFR4j5bLoDJg4rvlN4HiTt1LEwbilBPfxenxROPoH78UDJVYb13r5PDpq2tEnlOGx00wS4BKXYB"
+      );
+
+      const body = {
+        products: cart,
+      };
+
+      const headers1 = {
+        "Content-Type": "application/json",
+      };
+
+      // Second API call to create a Stripe checkout session
+      const response = await fetch(
+        "http://localhost:1000/api/v1/create-checkout-session",
+        {
+          method: "POST",
+          headers: headers1,
+          body: JSON.stringify(body),
+        }
+      );
+
+      const session = await response.json();
+
+      // Redirect to Stripe Checkout
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+
+      // Handle any errors that occur during the Stripe redirection
+      if (result.error) {
+        console.error(result.error);
+      }
     } catch (error) {
-      alert(error.message);
+      console.error("An error occurred:", error.message);
+      alert("Order failed or payment error: " + error.message);
     }
   };
 
@@ -213,7 +249,10 @@ function Cart() {
               <span>Total Cost:</span>
               <span>${finalTotal.toFixed(2)}</span>
             </div>
-            <button className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200">
+            <button
+              onClick={placeOrder}
+              className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200"
+            >
               Proceed to Checkout
             </button>
           </div>

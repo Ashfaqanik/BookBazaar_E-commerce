@@ -15,6 +15,11 @@ const order = new mongoose.Schema(
       default: "Order Placed",
       enum: ["Order Placed", "Out for delivery", "Delivered", "Cancelled"],
     },
+    payment: {
+      type: String,
+      default: "Unpaid",
+      enum: ["Unpaid", "Paid"],
+    },
   },
   { timestamps: true }
 );
