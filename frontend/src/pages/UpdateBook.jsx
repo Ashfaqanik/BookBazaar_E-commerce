@@ -85,13 +85,39 @@ function UpdateBook() {
   const submit = async (e) => {
     e.preventDefault(); // Prevent default form submission
     try {
+      // Checking for empty fields
+      if (
+        !data.url.trim() ||
+        !data.title.trim() ||
+        !data.author.trim() ||
+        !data.price.trim() ||
+        !data.discount.trim() ||
+        !data.desc.trim() ||
+        !data.category.trim() ||
+        !data.language.trim()
+      ) {
+        alert("All fields are required");
+        return;
+      }
+
+      // Checking URL length
+      if (data.url.length > 2048) {
+        alert("URL must be 2048 characters or less.");
+        return;
+      }
+
+      // Validating price and discount
+      if (isNaN(data.price) || isNaN(data.discount)) {
+        alert("Price and Discount must be valid numbers.");
+        return;
+      }
       const response = await axios.put(
         "http://localhost:1000/api/v1/updateBook",
-        { ...data, id }, // Include the id in the request
+        { ...data, id },
         { headers }
       );
       alert(response.data.message);
-      navigate("/all-books"); // Redirect to the all-books page
+      navigate("/all-books"); // Redirecting to the all-books page
     } catch (error) {
       alert(error.response?.data?.message || "Something went wrong");
     }

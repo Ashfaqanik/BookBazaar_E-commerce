@@ -67,17 +67,30 @@ function AddBook() {
 
   const submit = async () => {
     try {
+      // Checking for empty fields
       if (
-        data.url === "" ||
-        data.title === "" ||
-        data.author === "" ||
-        data.price === "" ||
-        data.discount === "" ||
-        data.desc === "" ||
-        data.category === "" ||
-        data.language === ""
+        !data.url.trim() ||
+        !data.title.trim() ||
+        !data.author.trim() ||
+        !data.price.trim() ||
+        !data.discount.trim() ||
+        !data.desc.trim() ||
+        !data.category.trim() ||
+        !data.language.trim()
       ) {
         alert("All fields are required");
+        return;
+      }
+
+      // Checking URL length
+      if (data.url.length > 2048) {
+        alert("URL must be 2048 characters or less.");
+        return;
+      }
+
+      // Validating price and discount
+      if (isNaN(data.price) || isNaN(data.discount)) {
+        alert("Price and Discount must be valid numbers.");
         return;
       }
 
@@ -97,12 +110,14 @@ function AddBook() {
         category: "",
         language: "",
       });
-      alert(response.data.message);
+
+      // Showing success message
+      alert(response.data.message || "Book added successfully!");
     } catch (error) {
+      console.error("Error adding book:", error);
       alert(error.response?.data?.message || "Something went wrong");
     }
   };
-
   return (
     <div className="h-[100%] p-0 md:p-4">
       <h1 className="text-2xl md:text-3xl font-semibold text-slate-500 mb-4">
