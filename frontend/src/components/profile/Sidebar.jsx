@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth";
@@ -8,9 +8,18 @@ import { useSelector } from "react-redux";
 function Sidebar({ data }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation(); // To get the current location
   const role = useSelector((state) => state.auth.role);
 
   const [activeLink, setActiveLink] = useState("accountDetails");
+  // useEffect to set activeLink based on URL
+  useEffect(() => {
+    if (location.pathname === "/profile/orderHistory") {
+      setActiveLink("orderHistory");
+    } else if (location.pathname === "/profile") {
+      setActiveLink("accountDetails");
+    }
+  }, [location.pathname]);
   const handleLinkClick = (link) => {
     setActiveLink(link);
   };

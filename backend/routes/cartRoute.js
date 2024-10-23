@@ -47,27 +47,42 @@ router.get("/getCartItems", authenticateToken, async (req, res) => {
     res.status(500).json({ message: "An error occurred" });
   }
 });
+
 router.post("/create-checkout-session", async (req, res) => {
   const { products } = req.body;
 
-  const lineItems = products.map((product) => ({
-    price_data: {
-      currency: "aud",
-      product_data: {
-        name: product.title,
-        images: [product.url],
-      },
-      unit_amount: Math.round(product.price * 100),
-    },
-    quantity: 1,
-  }));
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ["card"],
-    line_items: lineItems,
-    mode: "payment",
-    success_url: "http://localhost:5173/success",
-    cancel_url: "http://localhost:5173/cancelled",
-  });
-  res.json({ id: session.id });
+  try {
+    const lineItems = products.map((product) => {
+      if (!product.title || !product.price || !product.url) {
+        throw new Error("Product must have title, price, and url.");
+      }
+
+      return {
+        price_data: {
+          currency: "aud",
+          product_data: {
+            name: product.title,
+            images: [product.url],
+          },
+          unit_amount: Math.round(product.price * 100), // Convert to cents
+        },
+        quantity: 1,
+      };
+    });
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: "http://localhost:5173/success",
+      cancel_url: "http://localhost:5173/cancelled",
+    });
+
+    res.json({ id: session.id });
+  } catch (error) {
+    console.error("Error creating checkout session:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
+
 module.exports = router;
