@@ -70,8 +70,8 @@ function Navbar() {
     localStorage.removeItem("role");
     navigate("/");
   };
-  const favoriteCount = favoriteBooks.length;
-  const cartCount = cart.length;
+  const favoriteCount = isLoggedIn ? favoriteBooks.length : 0;
+  const cartCount = isLoggedIn ? cart.length : 0;
 
   const links = [
     {
