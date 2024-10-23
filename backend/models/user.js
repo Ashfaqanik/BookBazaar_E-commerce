@@ -1,25 +1,30 @@
 const mongoose = require("mongoose");
 
-const user = new mongoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      required: true,
+      required: [true, "Username is required"],
       unique: true,
+      trim: true,
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Email is required"],
       unique: true,
+      lowercase: true,
     },
     password: {
       type: String,
-      required: true,
-      unique: true,
+      required: [true, "Password is required"],
     },
     address: {
       type: String,
-      required: true,
+      required: [true, "Address is required"],
+    },
+    phoneNumber: {
+      type: String,
+      required: [true, "Phone number is required"],
     },
     avatar: {
       type: String,
@@ -52,4 +57,5 @@ const user = new mongoose.Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("user", user);
+
+module.exports = mongoose.model("user", userSchema);

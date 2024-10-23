@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../components/Loader/Loader";
 import { FaPencilAlt } from "react-icons/fa";
+
 function AccountDetails() {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [value, setValue] = useState({ address: "" });
+  const [value, setValue] = useState({ address: "", phoneNumber: "" }); // Added phoneNumber to state
   const [successMessage, setSuccessMessage] = useState(null);
   const [updateError, setUpdateError] = useState(null);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [isEditing, setIsEditing] = useState(true);
+  const [isEditingAddress, setIsEditingAddress] = useState(false); // Edit mode for address
+  const [isEditingPhone, setIsEditingPhone] = useState(false); // Edit mode for phone number
 
   // Headers to authenticate API requests
   const headers = {
@@ -27,7 +29,10 @@ function AccountDetails() {
           { headers }
         );
         setProfileData(res.data);
-        setValue({ address: res.data.address });
+        setValue({
+          address: res.data.address,
+          phoneNumber: res.data.phoneNumber,
+        }); // Setting initial values
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch profile data");
@@ -37,7 +42,7 @@ function AccountDetails() {
     fetchData();
   }, [successMessage]);
 
-  // Handle address update
+  // Handling address update
   const handleUpdateAddress = async (e) => {
     e.preventDefault();
     setIsUpdating(true);
@@ -51,7 +56,7 @@ function AccountDetails() {
         { headers }
       );
       setSuccessMessage(res.data.message);
-      setIsEditing(false); // Hide the form after successful update
+      setIsEditingAddress(false); // Hiding the form after successful update
     } catch (err) {
       setUpdateError("Failed to update address");
     } finally {
@@ -59,14 +64,42 @@ function AccountDetails() {
     }
   };
 
-  // Handling form input change
-  const handleInputChange = (e) => {
-    setValue({ ...value, address: e.target.value });
+  // Handle phone number update
+  const handleUpdatePhoneNumber = async (e) => {
+    e.preventDefault();
+    setIsUpdating(true);
+    setSuccessMessage(null);
+    setUpdateError(null);
+
+    try {
+      const res = await axios.put(
+        "http://localhost:1000/api/v1/updatePhoneNumber",
+        { phoneNumber: value.phoneNumber },
+        { headers }
+      );
+      setSuccessMessage(res.data.message);
+      setIsEditingPhone(false); // Hiding the form after successful update
+    } catch (err) {
+      setUpdateError("Failed to update phone number");
+    } finally {
+      setIsUpdating(false);
+    }
   };
 
-  // Toggling edit mode
-  const handleEditClick = () => {
-    setIsEditing(!isEditing);
+  // Handling form input change
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setValue((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Toggling edit mode for address
+  const handleEditAddressClick = () => {
+    setIsEditingAddress(!isEditingAddress);
+  };
+
+  // Toggling edit mode for phone number
+  const handleEditPhoneClick = () => {
+    setIsEditingPhone(!isEditingPhone);
   };
 
   if (loading)
@@ -96,14 +129,26 @@ function AccountDetails() {
             <p className="text-lg text-gray-700 flex items-center mt-2">
               <strong>Address:&nbsp; </strong> {profileData.address}
               <button
-                onClick={handleEditClick}
+                onClick={handleEditAddressClick}
                 className="ml-2 text-black hover:text-blue-700"
               >
                 <FaPencilAlt />{" "}
               </button>
             </p>
 
-            {isEditing && (
+            {/* Phone Number Display and Edit */}
+            <p className="text-lg text-gray-700 flex items-center mt-2">
+              <strong>Phone Number:&nbsp; </strong> {profileData.phoneNumber}
+              <button
+                onClick={handleEditPhoneClick}
+                className="ml-2 text-black hover:text-blue-700"
+              >
+                <FaPencilAlt />{" "}
+              </button>
+            </p>
+
+            {/* Address Update Form */}
+            {isEditingAddress && (
               <form
                 onSubmit={handleUpdateAddress}
                 className="flex flex-col mt-4 space-y-4"
@@ -129,6 +174,36 @@ function AccountDetails() {
                   disabled={isUpdating}
                 >
                   {isUpdating ? "Updating..." : "Update Address"}
+                </button>
+              </form>
+            )}
+            {/* Phone Number Update Form */}
+            {isEditingPhone && (
+              <form
+                onSubmit={handleUpdatePhoneNumber}
+                className="flex flex-col mt-4 space-y-4"
+              >
+                <label htmlFor="phoneNumber" className="text-lg text-gray-700">
+                  <strong>Edit Phone Number:</strong>
+                </label>
+                <input
+                  type="text"
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  value={value.phoneNumber}
+                  onChange={handleInputChange}
+                  className="md:w-[50%] px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                  type="submit"
+                  className={`md:w-[50%] py-2 px-4 rounded-lg text-white ${
+                    isUpdating
+                      ? "bg-gray-500 cursor-not-allowed"
+                      : "bg-blue-600 hover:bg-blue-700"
+                  }`}
+                  disabled={isUpdating}
+                >
+                  {isUpdating ? "Updating..." : "Update Phone Number"}
                 </button>
               </form>
             )}

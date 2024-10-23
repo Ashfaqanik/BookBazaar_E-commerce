@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+
 function SignUp() {
   const navigate = useNavigate();
   const [values, setValues] = useState({
@@ -8,16 +9,26 @@ function SignUp() {
     email: "",
     password: "",
     address: "",
+    phoneNumber: "",
   });
+
+  const validatePhoneNumber = (phone) => {
+    const phoneRegex = /^[0-9]{10}$/; // Simple regex for 10-digit phone numbers
+    return phoneRegex.test(phone);
+  };
+
   const onSubmitHandler = async () => {
     try {
       if (
         values.username === "" ||
         values.email === "" ||
         values.password === "" ||
-        values.address === ""
+        values.address === "" ||
+        values.phoneNumber === ""
       ) {
         alert("All fields are required");
+      } else if (!validatePhoneNumber(values.phoneNumber)) {
+        alert("Please enter a valid 10-digit phone number.");
       } else {
         const res = await axios.post(
           "http://localhost:1000/api/v1/signUp",
@@ -30,10 +41,12 @@ function SignUp() {
       alert(error.response.data.message);
     }
   };
+
   const change = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };
+
   return (
     <div className="h-auto px-12 py-8 flex items-center justify-center mt-6">
       <div className="bg-slate-400 rounded-lg px-8 py-5 w-full md:w-3/6 lg:w-2/6">
@@ -83,7 +96,20 @@ function SignUp() {
               onChange={change}
             />
           </div>
-
+          <div className="mt-4">
+            <label htmlFor="" className="text-slate-800">
+              Phone Number
+            </label>
+            <input
+              type="text"
+              className="w-full mt-2 bg-slate-200 text-slate-600 p-2 outline-none rounded-md"
+              placeholder="phone number"
+              name="phoneNumber"
+              required
+              value={values.phoneNumber}
+              onChange={change}
+            />
+          </div>
           <div className="mt-4 mb-4">
             <label htmlFor="" className="text-slate-800">
               Address

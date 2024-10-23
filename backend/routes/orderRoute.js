@@ -4,7 +4,7 @@ const Order = require("../models/order");
 const User = require("../models/user");
 const { authenticateToken } = require("./userAuth");
 
-//place order
+//placing order
 router.post("/placeOrder", authenticateToken, async (req, res) => {
   try {
     const { id } = req.headers;
@@ -58,7 +58,10 @@ router.get("/getAllOrders", authenticateToken, async (req, res) => {
   try {
     const userData = await Order.find()
       .populate({
-        path: "book",
+        path: "book", // Populate book details
+      })
+      .populate({
+        path: "user", // Populate user details
       })
       .sort({ createdAt: -1 });
 
@@ -70,6 +73,7 @@ router.get("/getAllOrders", authenticateToken, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 router.put("/updatePaymentStatus/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -84,7 +88,7 @@ router.put("/updatePaymentStatus/:id", authenticateToken, async (req, res) => {
   }
 });
 
-//Update order --admin
+//Updating order --admin
 router.put("/updateOrderStatus/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;

@@ -6,7 +6,7 @@ const { authenticateToken } = require("./userAuth");
 
 router.post("/signUp", async (req, res) => {
   try {
-    const { username, email, password, address } = req.body;
+    const { username, email, password, phoneNumber, address } = req.body;
 
     if (username.length < 4) {
       return res
@@ -29,6 +29,7 @@ router.post("/signUp", async (req, res) => {
       username: username,
       email: email,
       password: hashPass,
+      phoneNumber: phoneNumber,
       address: address,
     });
     await newUser.save();
@@ -88,4 +89,36 @@ router.put("/updateAddress", authenticateToken, async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+router.put("/updatePhoneNumber", authenticateToken, async (req, res) => {
+  try {
+    const { id } = req.headers; // To extract user ID from headers
+    const { phoneNumber } = req.body; // To get phoneNumber from request body
+
+    // Validate that phoneNumber is provided
+    if (!phoneNumber || !/^[0-9]{10}$/.test(phoneNumber)) {
+      return res.status(400).json({
+        message:
+          "Invalid phone number format. Please provide a valid 10-digit phone number.",
+      });
+    }
+
+    // Find the user by ID and update the phone number
+    const data = await User.findByIdAndUpdate(
+      id,
+      { phoneNumber: phoneNumber },
+      { new: true, runValidators: true }
+    );
+
+    if (!data) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Phone number updated successfully." });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 module.exports = router;
