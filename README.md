@@ -4,13 +4,19 @@ BookBazaar is a full-stack e-commerce web application designed for buying and se
 
 Features
 
-    User Authentication: Sign up, log in, and manage user accounts securely.
-    Book Listings: Browse a collection of books with detailed descriptions and prices.
-    Add to Cart: Users can add books to the cart for purchasing.
-    Payment Integration: Secure payment processing with Stripe.
-    Order Management: Users can place orders and track the status of their orders.
-    Admin Dashboard: Manage books and update order statuses.
-    Responsive Design: Works across all screen sizes, including desktop and mobile.
+User Authentication: Sign up, log in, and manage user accounts securely.
+
+Book Listings: Browse a collection of books with detailed descriptions and prices.
+
+Add to Cart: Users can add books to the cart for purchasing.
+
+Payment Integration: Secure payment processing with Stripe.
+
+Order Management: Users can place orders and track the status of their orders.
+
+Admin Dashboard: Manage books and update order statuses.
+
+Responsive Design: Works across all screen sizes, including desktop and mobile.
 
 Technologies Used
 
