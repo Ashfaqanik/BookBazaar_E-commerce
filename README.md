@@ -15,14 +15,17 @@ Features
 Technologies Used
 
 Frontend
+
 React: A JavaScript library for building user interfaces.
 Redux: State management for handling user sessions, cart, and orders.
 Tailwind CSS: A utility-first CSS framework for styling the application.
 
 Backend
+
 Node.js: JavaScript runtime environment for building the backend.
 Express: A minimal and flexible Node.js web application framework.
 MongoDB: NoSQL database for storing book listings, user data, and orders.
 
 Payment Integration
+
 Stripe: Used for handling secure payments.
