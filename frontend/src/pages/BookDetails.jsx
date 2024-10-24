@@ -20,7 +20,6 @@ function BookDetails() {
       const res = await axios.get(
         `http://localhost:1000/api/v1/getBookById/${id}`
       );
-      console.log(res);
       setData(res.data.data);
     };
     fetch();

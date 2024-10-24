@@ -17,7 +17,6 @@ function OrderHistory() {
           headers,
         }
       );
-      console.log(res);
       setOrderHistory(res.data.data || []);
     };
     fetch();
