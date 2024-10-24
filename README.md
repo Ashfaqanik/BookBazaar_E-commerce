@@ -1,8 +1,8 @@
-BookBazaar
+**BookBazaar**
 
 BookBazaar is a full-stack e-commerce web application designed for buying and selling books. The application offers features like browsing books, adding them to a cart, processing payments, and managing orders. Built using modern technologies, BookBazaar provides a seamless shopping experience with a responsive design.
 
-Features
+<span style="font-weight: 600;">Features</span>
 
 User Authentication: Sign up, log in, and manage user accounts securely.
 
@@ -18,7 +18,7 @@ Admin Dashboard: Manage books and update order statuses.
 
 Responsive Design: Works across all screen sizes, including desktop and mobile.
 
-Technologies Used
+<span style="font-weight: 600;">Technologies Used</span>
 
 Frontend
 
@@ -32,6 +32,6 @@ Node.js: JavaScript runtime environment for building the backend.
 Express: A minimal and flexible Node.js web application framework.
 MongoDB: NoSQL database for storing book listings, user data, and orders.
 
-Payment Integration
+<span style="font-weight: 600;">Payment Integration</span>
 
 Stripe: Used for handling secure payments.
