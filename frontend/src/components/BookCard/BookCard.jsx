@@ -18,7 +18,7 @@ export default function BookCard({ data }) {
     const fetchFavorites = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:1000/api/v1/getFavorites",
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/getFavorites",
           { headers }
         );
         setFavoriteBooks(res.data.data || []);
@@ -36,7 +36,7 @@ export default function BookCard({ data }) {
     if (isLoggedIn) {
       try {
         const res = await axios.put(
-          "http://localhost:1000/api/v1/addBookToFavorite",
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/addBookToFavorite",
           { bookId: data._id }, // Passing the book ID to the API
           { headers }
         );
@@ -55,7 +55,7 @@ export default function BookCard({ data }) {
   const removeFavoriteHandler = async () => {
     try {
       const res = await axios.put(
-        "http://localhost:1000/api/v1/removeBookFromFavorite",
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/removeBookFromFavorite",
         {},
         { headers }
       );

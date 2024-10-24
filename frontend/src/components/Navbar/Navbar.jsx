@@ -27,7 +27,7 @@ function Navbar() {
       const fetchFavorites = async () => {
         try {
           const res = await axios.get(
-            "http://localhost:1000/api/v1/getFavorites",
+            "https://bookbazaar-e-commerce.onrender.com/api/v1/getFavorites",
             { headers }
           );
           setFavoriteBooks(res.data.data || []);
@@ -42,7 +42,7 @@ function Navbar() {
     if (isLoggedIn) {
       const fetch = async () => {
         const res = await axios.get(
-          "http://localhost:1000/api/v1/getCartItems",
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/getCartItems",
           {
             headers,
           }

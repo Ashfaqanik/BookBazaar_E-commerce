@@ -10,9 +10,12 @@ function Favorites() {
   };
   useEffect(() => {
     const fetch = async () => {
-      const res = await axios.get("http://localhost:1000/api/v1/getFavorites", {
-        headers,
-      });
+      const res = await axios.get(
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/getFavorites",
+        {
+          headers,
+        }
+      );
       setFavoriteBooks(res.data.data || []);
     };
     fetch();

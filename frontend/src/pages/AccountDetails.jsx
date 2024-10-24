@@ -25,7 +25,7 @@ function AccountDetails() {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:1000/api/v1/getUserInformation",
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/getUserInformation",
           { headers }
         );
         setProfileData(res.data);
@@ -51,7 +51,7 @@ function AccountDetails() {
 
     try {
       const res = await axios.put(
-        "http://localhost:1000/api/v1/updateAddress",
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/updateAddress",
         { address: value.address },
         { headers }
       );
@@ -73,7 +73,7 @@ function AccountDetails() {
 
     try {
       const res = await axios.put(
-        "http://localhost:1000/api/v1/updatePhoneNumber",
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/updatePhoneNumber",
         { phoneNumber: value.phoneNumber },
         { headers }
       );

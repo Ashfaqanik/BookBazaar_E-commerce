@@ -31,7 +31,7 @@ function SignUp() {
         alert("Please enter a valid 10-digit phone number.");
       } else {
         const res = await axios.post(
-          "http://localhost:1000/api/v1/signUp",
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/signUp",
           values
         );
         alert(res.data.message);

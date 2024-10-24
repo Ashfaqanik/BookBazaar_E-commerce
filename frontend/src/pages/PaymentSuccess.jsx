@@ -12,7 +12,7 @@ function PaymentSuccess() {
   useEffect(() => {
     const fetch = async () => {
       const res = await axios.get(
-        "http://localhost:1000/api/v1/getOrderHistory",
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/getOrderHistory",
         {
           headers,
         }
@@ -30,7 +30,7 @@ function PaymentSuccess() {
   const updateOrderStatus = async (id, status) => {
     try {
       await axios.put(
-        `http://localhost:1000/api/v1/updatePaymentStatus/${id}`,
+        `https://bookbazaar-e-commerce.onrender.com/api/v1/updatePaymentStatus/${id}`,
         { status }, // sending the new status in the request body
         { headers }
       );

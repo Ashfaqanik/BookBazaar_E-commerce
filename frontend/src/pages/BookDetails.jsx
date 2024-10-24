@@ -18,7 +18,7 @@ function BookDetails() {
   useEffect(() => {
     const fetch = async () => {
       const res = await axios.get(
-        `http://localhost:1000/api/v1/getBookById/${id}`
+        `https://bookbazaar-e-commerce.onrender.com/api/v1/getBookById/${id}`
       );
       setData(res.data.data);
     };
@@ -34,7 +34,7 @@ function BookDetails() {
   const submitFavoriteHandler = async () => {
     if (isLoggedIn) {
       const res = await axios.put(
-        "http://localhost:1000/api/v1/addBookToFavorite",
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/addBookToFavorite",
         {},
         { headers }
       );
@@ -47,7 +47,7 @@ function BookDetails() {
   const submitCartHandler = async () => {
     if (isLoggedIn) {
       const res = await axios.put(
-        "http://localhost:1000/api/v1/addToCart",
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/addToCart",
         {},
         { headers }
       );
@@ -64,7 +64,7 @@ function BookDetails() {
     if (confirmDelete) {
       try {
         const res = await axios.delete(
-          "http://localhost:1000/api/v1/deleteBook",
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/deleteBook",
           {
             headers,
           }

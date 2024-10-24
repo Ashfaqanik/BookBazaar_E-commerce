@@ -23,7 +23,7 @@ function Cart() {
     const fetchCartItems = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:1000/api/v1/getCartItems",
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/getCartItems",
           {
             headers,
           }
@@ -58,7 +58,7 @@ function Cart() {
     try {
       // First API call to place the order in your local system
       const placeOrderRes = await axios.post(
-        "http://localhost:1000/api/v1/placeOrder",
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/placeOrder",
         { order: cart },
         { headers }
       );
@@ -78,7 +78,7 @@ function Cart() {
 
       // Second API call to create a Stripe checkout session
       const response = await fetch(
-        "http://localhost:1000/api/v1/create-checkout-session",
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/create-checkout-session",
         {
           method: "POST",
           headers: headers1,
@@ -107,7 +107,7 @@ function Cart() {
   const deleteItem = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:1000/api/v1/removeBookFromCart/${id}`,
+        `https://bookbazaar-e-commerce.onrender.com/api/v1/removeBookFromCart/${id}`,
         {},
         { headers }
       );

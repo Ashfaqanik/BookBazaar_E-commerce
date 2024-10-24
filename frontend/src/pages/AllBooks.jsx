@@ -43,6 +43,7 @@ const languages = [
   "Hindi",
   "Japanese",
   "Norwegian",
+  "Bangla",
 ];
 
 function Allbooks() {
@@ -53,7 +54,9 @@ function Allbooks() {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      const res = await axios.get("http://localhost:1000/api/v1/getAllBooks");
+      const res = await axios.get(
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/getAllBooks"
+      );
       setData(res.data.data);
       setFilteredData(res.data.data);
     };

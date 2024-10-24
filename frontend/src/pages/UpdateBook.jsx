@@ -54,13 +54,14 @@ function UpdateBook() {
     "Hindi",
     "Japanese",
     "Norwegian",
+    "Bangla",
   ];
 
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:1000/api/v1/getBookById/${id}`
+          `https://bookbazaar-e-commerce.onrender.com/api/v1/getBookById/${id}`
         );
         setData(res.data.data);
       } catch (error) {
@@ -112,7 +113,7 @@ function UpdateBook() {
         return;
       }
       const response = await axios.put(
-        "http://localhost:1000/api/v1/updateBook",
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/updateBook",
         { ...data, id },
         { headers }
       );

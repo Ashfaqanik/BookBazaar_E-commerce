@@ -74,8 +74,8 @@ router.post("/create-checkout-session", async (req, res) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      success_url: "http://localhost:5173/success",
-      cancel_url: "http://localhost:5173/cancelled",
+      success_url: "https://bookbazaar-e-commerce.onrender.com/success",
+      cancel_url: "https://bookbazaar-e-commerce.onrender.com/cancelled",
     });
 
     res.json({ id: session.id });

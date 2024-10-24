@@ -17,7 +17,7 @@ function Login() {
         alert("All fields are required");
       } else {
         const res = await axios.post(
-          "http://localhost:1000/api/v1/signIn",
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/signIn",
           values
         );
         dispatch(authActions.login());

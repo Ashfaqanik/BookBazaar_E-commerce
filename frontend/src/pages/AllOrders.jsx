@@ -14,7 +14,7 @@ function AllOrders() {
     const fetchAllOrders = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:1000/api/v1/getAllOrders",
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/getAllOrders",
           {
             headers,
           }
@@ -31,7 +31,7 @@ function AllOrders() {
     try {
       setLoading(true);
       await axios.put(
-        `http://localhost:1000/api/v1/updateOrderStatus/${id}`,
+        `https://bookbazaar-e-commerce.onrender.com/api/v1/updateOrderStatus/${id}`,
         { status }, // sending the new status in the request body
         { headers }
       );

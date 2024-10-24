@@ -53,6 +53,7 @@ function AddBook() {
     "Hindi",
     "Japanese",
     "Norwegian",
+    "Bangla",
   ];
 
   const headers = {
@@ -95,7 +96,7 @@ function AddBook() {
       }
 
       const response = await axios.post(
-        "http://localhost:1000/api/v1/addBook",
+        "https://bookbazaar-e-commerce.onrender.com/api/v1/addBook",
         data,
         { headers }
       );
