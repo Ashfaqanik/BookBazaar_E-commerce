@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function BookCard({ data }) {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -27,7 +29,7 @@ export default function BookCard({ data }) {
       }
     };
     isLoggedIn && fetchFavorites();
-  }, [favoriteBooks]);
+  }, [isLoggedIn]);
 
   const isFavorite = favoriteBooks.some((book) => book._id === data._id);
 
@@ -40,14 +42,15 @@ export default function BookCard({ data }) {
           { bookId: data._id }, // Passing the book ID to the API
           { headers }
         );
-        alert(res.data.message);
+        toast.success(res.data.message);
 
         setFavoriteBooks((prevFavorites) => [...prevFavorites, data]);
       } catch (error) {
         console.error("Error adding to favorites:", error);
+        toast.error("Failed to add book to favorites"); // Showing error toast on failure
       }
     } else {
-      alert("Please log in to your account");
+      toast.info("Please log in to your account");
     }
   };
 
@@ -59,13 +62,14 @@ export default function BookCard({ data }) {
         {},
         { headers }
       );
-      alert(res.data.message);
+      toast.success(res.data.message);
 
       setFavoriteBooks((prevFavorites) =>
         prevFavorites.filter((book) => book._id !== data._id)
       );
     } catch (error) {
       console.error("Error removing from favorites:", error);
+      toast.error("Failed to remove book from favorites");
     }
   };
 

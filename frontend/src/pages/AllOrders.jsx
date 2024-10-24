@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader/Loader";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AllOrders() {
   const [allOrders, setAllOrders] = useState();
@@ -38,9 +40,9 @@ function AllOrders() {
       const updatedOrders = allOrders.map((order) =>
         order._id === id ? { ...order, status } : order
       );
-      setAllOrders(updatedOrders); // Update state with the new order status
+      setAllOrders(updatedOrders); // Updating state with the new order status
       setLoading(false);
-      alert("Order status updated successfully");
+      toast.success("Order status updated successfully");
     } catch (error) {
       console.error("Failed to update order status", error.response?.data);
       setLoading(false);

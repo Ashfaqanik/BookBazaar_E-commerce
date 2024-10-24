@@ -20,6 +20,8 @@ import AddBook from "./pages/AddBook";
 import UpdateBook from "./pages/UpdateBook";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
+import { ToastContainer } from "react-toastify"; // Import ToastContainer
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -65,6 +67,7 @@ function App() {
         </Routes>
       </main>
       <Footer />
+      <ToastContainer />
     </div>
   );
 }

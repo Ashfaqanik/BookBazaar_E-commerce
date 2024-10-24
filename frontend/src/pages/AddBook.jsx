@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AddBook() {
   const [data, setData] = useState({
@@ -79,19 +81,19 @@ function AddBook() {
         !data.category.trim() ||
         !data.language.trim()
       ) {
-        alert("All fields are required");
+        toast.error("All fields are required");
         return;
       }
 
       // Checking URL length
       if (data.url.length > 2048) {
-        alert("URL must be 2048 characters or less.");
+        toast.error("URL must be 2048 characters or less.");
         return;
       }
 
       // Validating price and discount
       if (isNaN(data.price) || isNaN(data.discount)) {
-        alert("Price and Discount must be valid numbers.");
+        toast.error("Price and Discount must be valid numbers.");
         return;
       }
 
@@ -113,12 +115,13 @@ function AddBook() {
       });
 
       // Showing success message
-      alert(response.data.message || "Book added successfully!");
+      toast.success(response.data.message || "Book added successfully!");
     } catch (error) {
       console.error("Error adding book:", error);
-      alert(error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
+
   return (
     <div className="h-[100%] p-0 md:p-4">
       <h1 className="text-2xl md:text-3xl font-semibold text-slate-500 mb-4">

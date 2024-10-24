@@ -6,6 +6,8 @@ import { GrLanguage } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function BookDetails() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -33,12 +35,16 @@ function BookDetails() {
 
   const submitFavoriteHandler = async () => {
     if (isLoggedIn) {
-      const res = await axios.put(
-        "https://bookbazaar-e-commerce.onrender.com/api/v1/addBookToFavorite",
-        {},
-        { headers }
-      );
-      alert(res.data.message);
+      try {
+        const res = await axios.put(
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/addBookToFavorite",
+          {},
+          { headers }
+        );
+        toast.success(res.data.message);
+      } catch (error) {
+        toast.error("Failed to add to favorites");
+      }
     } else {
       navigate("/login");
     }
@@ -46,12 +52,16 @@ function BookDetails() {
 
   const submitCartHandler = async () => {
     if (isLoggedIn) {
-      const res = await axios.put(
-        "https://bookbazaar-e-commerce.onrender.com/api/v1/addToCart",
-        {},
-        { headers }
-      );
-      alert(res.data.message);
+      try {
+        const res = await axios.put(
+          "https://bookbazaar-e-commerce.onrender.com/api/v1/addToCart",
+          {},
+          { headers }
+        );
+        toast.success(res.data.message);
+      } catch (error) {
+        toast.error("Failed to add to cart");
+      }
     } else {
       navigate("/login");
     }
@@ -65,20 +75,20 @@ function BookDetails() {
       try {
         const res = await axios.delete(
           "https://bookbazaar-e-commerce.onrender.com/api/v1/deleteBook",
-          {
-            headers,
-          }
+          { headers }
         );
-        alert(res.data.message);
-        navigate("/all-books"); // Redirect to the all-books page
+        toast.success(res.data.message);
+        navigate("/all-books");
       } catch (error) {
-        alert(error.response?.data?.message || "Failed to delete the book");
+        toast.error(
+          error.response?.data?.message || "Failed to delete the book"
+        );
       }
     }
   };
 
   const handleEdit = () => {
-    navigate(`/update-book/${id}`); // Navigate to the update book page
+    navigate(`/update-book/${id}`);
   };
 
   return (
@@ -93,7 +103,7 @@ function BookDetails() {
           <div className=" bg-slate-100 p-2 h-[58vh] lg:h-[68vh] w-full lg:w-3/6 flex items-center justify-center">
             <img
               src={data.url}
-              alt="/"
+              alt={data.title}
               className="h-[50vh] lg:h-[60vh] rounded-xl"
             />
           </div>

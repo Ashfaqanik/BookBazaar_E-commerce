@@ -4,6 +4,8 @@ import { AiFillDelete } from "react-icons/ai";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Cart() {
   const navigate = useNavigate();
@@ -111,7 +113,7 @@ function Cart() {
         {},
         { headers }
       );
-      alert(response.data.message);
+      toast.success(response.data.message);
       // Remove item from local state
       setCart((prevCart) => prevCart.filter((item) => item._id !== id));
     } catch (err) {
@@ -224,7 +226,7 @@ function Cart() {
               onClick={placeOrder}
               className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200"
             >
-              Proceed to Checkout
+              {`Proceed to Checkout (Test Mode)`}
             </button>
           </div>
 
@@ -253,7 +255,7 @@ function Cart() {
               onClick={placeOrder}
               className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 transition duration-200"
             >
-              Proceed to Checkout
+              {`Proceed to Checkout (Test Mode)`}
             </button>
           </div>
         </>
