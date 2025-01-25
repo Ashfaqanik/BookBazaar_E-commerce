@@ -109,8 +109,8 @@ function AllOrders() {
               </div>
               <div className="w-[20%] md:w-[15%] text-xs md:text-sm ">
                 <h1 className="text-left md:text-center">
-                  <strong>Address:</strong> {item.user.address} <br />
-                  <strong>Phone:</strong> {item.user.phoneNumber}
+                  <strong>Address:</strong> {item.user?.address || "N/A"} <br />
+                  <strong>Phone:</strong> {item.user?.phoneNumber || "N/A"}
                 </h1>
               </div>
               <div className="w-[15%] text-xs md:text-sm ">

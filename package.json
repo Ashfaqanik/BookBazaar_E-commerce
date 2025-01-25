@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npx nodemon backend/app.js",
     "build": "npm install & npm install --prefix frontend && npm run build --prefix frontend",
-    "start": "npx nodemon backend/app.js"
+    "start": "npx node backend/app.js"
   },
   "keywords": [],
   "author": "",
