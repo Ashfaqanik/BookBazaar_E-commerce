@@ -7,11 +7,13 @@ import { useDispatch } from "react-redux";
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
   const onSubmitHandler = async () => {
+    setIsLoading(true);
     try {
       if (values.username === "" || values.password === "") {
         alert("All fields are required");
@@ -25,11 +27,12 @@ function Login() {
         localStorage.setItem("id", res.data.id);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("role", res.data.role);
-
         navigate("/");
       }
     } catch (error) {
       alert(error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   const change = (e) => {
@@ -79,7 +82,7 @@ function Login() {
               onClick={onSubmitHandler}
               className="w-full mt-2 border border-blue-500 bg-blue-500 text-black rounded-lg hover:bg-blue-800 hover:text-white transition-all duration-200 py-2 font-semibold"
             >
-              Log In
+              {isLoading ? "Logging In..." : "Log In"}
             </button>
           </div>
         </div>
