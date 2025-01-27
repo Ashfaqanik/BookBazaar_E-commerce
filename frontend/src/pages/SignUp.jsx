@@ -4,6 +4,7 @@ import axios from "axios";
 
 function SignUp() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState({
     username: "",
     email: "",
@@ -18,6 +19,7 @@ function SignUp() {
   };
 
   const onSubmitHandler = async () => {
+    setIsLoading(true);
     try {
       if (
         values.username === "" ||
@@ -39,6 +41,8 @@ function SignUp() {
       }
     } catch (error) {
       alert(error.response.data.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -130,7 +134,7 @@ function SignUp() {
               onClick={onSubmitHandler}
               className="w-full mt-2 border border-blue-500 bg-blue-500 text-black rounded-lg hover:bg-blue-800 hover:text-white transition-all duration-200 py-2 font-semibold"
             >
-              SignUp
+              {isLoading ? "Signing up..." : "Sign Up"}
             </button>
           </div>
         </div>
